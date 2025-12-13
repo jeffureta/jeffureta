@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Browser Tests</title>
+  <style>body{font-family:system-ui,Arial;margin:16px}#results div{margin:6px 0}</style>
+</head>
+<body>
+  <h2>Test Results</h2>
+  <div id="results"></div>
+
+  <script>
+    // Minimal vanilla JS test harness
+    const resultsEl = document.getElementById('results');
+    const tests = []; // {name, fn, module}
+
+    function basename(url){ try{ return url.split('/').pop(); }catch(e){ return url || 'unknown'; } }
+
+    function test(name, fn){
+      let moduleName = 'inline';
+      const cs = document.currentScript;
+      if (cs){
+        moduleName = cs.getAttribute('data-name') || cs.src || cs.getAttribute('src') || 'inline';
+        moduleName = basename(moduleName);
+      } else {
+        try{
+          const e = new Error();
+          const stack = e.stack || '';
+          const m = stack.split('\n').find(l => /\/[^\/ ]+\.js/.test(l));
+          if(m){
+            const match = m.match(/(https?:\/\/[^)\s]+|\/[^)\s:]+\.js)/);
+            moduleName = match ? basename(match[0]) : 'unknown';
+          }
+        }catch(_){}
+      }
+      tests.push({name, fn, module: moduleName});
+    }
+
+    function assert(cond, msg){ if(!cond) throw new Error(msg || 'Assertion failed'); }
+
+    // expose to modules explicitly
+    window.test = test;
+    window.assert = assert;
+
+    async function run(){
+      let passed = 0;
+      // group tests by module while preserving order
+      const groups = new Map();
+      for(const t of tests){
+        if(!groups.has(t.module)) groups.set(t.module, []);
+        groups.get(t.module).push(t);
+      }
+
+      for(const [moduleName, testList] of groups){
+        const header = document.createElement('div');
+        header.textContent = moduleName;
+        header.style.fontWeight = '600';
+        header.style.marginTop = '8px';
+        resultsEl.appendChild(header);
+
+        for(const t of testList){
+          try{
+            const res = t.fn();
+            if(res && typeof res.then === 'function') await res;
+            const ok = document.createElement('div'); ok.textContent = '  ✓ ' + t.name; ok.style.color = 'green'; ok.style.marginLeft = '8px'; resultsEl.appendChild(ok);
+            passed++;
+          }catch(e){
+            const fail = document.createElement('div'); fail.textContent = '  ✗ ' + t.name + ' — ' + e.message; fail.style.color = 'red'; fail.style.marginLeft = '8px'; resultsEl.appendChild(fail);
+          }
+        }
+      }
+
+      const summary = document.createElement('div'); summary.textContent = `${passed}/${tests.length} tests passed`;
+      summary.style.marginTop = '12px'; resultsEl.appendChild(summary);
+    }
+
+    window.addEventListener('load', () => setTimeout(run, 50));
+  </script>
+
+  <!-- load app and module tests -->
+  <!-- run on the terminal python3 -m http.server 8000-->
+  <!-- 127.0.0.1:8000/test-runner.html -->
+  <script type="module" src="app/index.js"></script>
+  <script type="module" src="tests/posts.test.js"></script>
+  <script type="module" src="tests/render.test.js"></script>
+  <script type="module" src="tests/utils.test.js"></script>
+</body>
+</html>

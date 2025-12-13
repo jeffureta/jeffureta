@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "title": "My First Post",
+        "date": "2023-10-25",
+        "filename": "post-1.md",
+        "summary": "This is a summary of my first blog post using Markdown."
+    },
+    {
+        "id": 2,
+        "title": "Learning JavaScript",
+        "date": "2023-10-26",
+        "filename": "post-2.md",
+        "summary": "JavaScript is cool, and Materialize makes it look good."
+    }
+]

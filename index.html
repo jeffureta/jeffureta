@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Simple Blog</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Font Awesome for PayPal icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        html, body { height: 100%; }
+        body { display: flex; flex-direction: column; min-height: 100vh; }
+        .container.section { flex: 1 0 auto; }
+        footer.page-footer { flex-shrink: 0; }
+    </style>
+</head>
+<body>
+    <!--The navigation bar -->
+    <nav class="blue darken-3">
+        <div class="nav-wrapper container">
+            <a href="index.html" class="brand-logo">My Blog</a>
+            <!--The hamburger menu icon-->
+            <a href="#" data-target="mobile-menu" class="sidenav-trigger left"><i class="material-icons">menu</i></a>
+        </div>
+    </nav>
+    <ul class="sidenav" id="mobile-menu">
+        <li><a href="index.html"><i class="fa fa-home"></i>Home</a></li>
+        <li><a href="about.html"><i class="fa fa-user"></i>About</a></li>
+        <li><a href="https://paypal.me/jeffureta/200" target="_blank" rel="noopener"><i class="fa-brands fa-paypal"></i>Buy me a coffee (PayPal)</a></li>
+        <li><a href="gcash.html"><i class="fa fa-wallet"></i>Buy me a coffee (GCash)</a></li>
+    </ul>
+    <!--The main content area -->
+    <div class="container section">
+        <div id="content-area"></div>
+    </div>
+    <!--The footer -->
+    <footer class="page-footer blue darken-3">
+        <div class="container">
+            <div class="row">
+                <div class="col s12">
+                    <p class="white-text center-align" style="margin:8px 0;">© 2025 My Simple Blog — Built with Materialize</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!--marked.js for Markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!--Materialize JS for UI components -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!--JS files for the app -->
+    <script type="module" src="app/index.js"></script>
+</body>
+</html>
