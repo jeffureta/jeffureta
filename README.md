@@ -35,6 +35,7 @@ my-markdown-blog/
 │   ├── posts.test.js
 │   ├── render.test.js
 │   └── utils.test.js
+├── images/              # Image assets for posts and site (e.g., thumbnails)
 └── posts/               # Directory for Markdown files
     ├── post-1.md
     └── post-2.md
@@ -51,6 +52,8 @@ my-markdown-blog/
 - `index.js` serves as the main entry point, importing and orchestrating the other modules.
 - This modular structure improves maintainability and makes it easier to write and run unit tests.
 - The rest of the project structure remains the same, with Markdown posts in the `posts/` directory and metadata in `posts.json`.
+
+- Add an `images/` folder at the repository root for post images, thumbnails, and other static assets used by the site.
 
 ## Phase 2: Frontend (`index.html`)
 
