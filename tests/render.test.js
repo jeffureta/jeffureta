@@ -1,4 +1,4 @@
-import { renderPostList, showNotFound, showError } from '../app/render.js';
+import { renderPostList, loadPost, showNotFound, showError } from '../app/render.js';
 
 // Simple vanilla tests using the harness in test-runner.html
 
@@ -21,4 +21,24 @@ test('showError displays provided message', () => {
   const contentArea = document.createElement('div');
   showError('Something went wrong', contentArea);
   assert(contentArea.textContent.includes('Something went wrong'), 'error message missing');
+});
+
+test('loadPost renders Facebook share anchor', async () => {
+  const contentArea = document.createElement('div');
+  const fakeMarkdown = '# Hello\nContent';
+  const origFetch = window.fetch;
+  const origMarked = window.marked;
+  // stub fetch and marked
+  window.fetch = () => Promise.resolve({ text: () => Promise.resolve(fakeMarkdown) });
+  window.marked = { parse: () => '<p>parsed</p>' };
+  try {
+    await loadPost('post-1.md', contentArea);
+    const shareAnchor = contentArea.querySelector('a[aria-label="Share on Facebook"]');
+    assert(shareAnchor, 'share anchor missing');
+    // verify href contains facebook sharer pattern
+    assert(shareAnchor.href.includes('facebook.com/sharer/sharer.php'), 'share href incorrect');
+  } finally {
+    window.fetch = origFetch;
+    window.marked = origMarked;
+  }
 });

@@ -24,14 +24,19 @@ export function renderPostList(posts, contentArea) {
 
 // Fetch and render a specific Markdown post
 export function loadPost(filename, contentArea) {
-    fetch(`posts/${filename}`)
+    return fetch(`posts/${filename}`)
         .then(response => response.text())
         .then(markdown => {
             const htmlContent = marked.parse(markdown);
             contentArea.innerHTML = `
-            <a href="index.html" class="btn waves-effect waves-light blue">
-                <i class="material-icons left">arrow_back</i> Back
-            </a>
+            <div style="display:flex;gap:.5rem;align-items:center;margin-bottom:1rem;">
+                <a href="index.html" class="btn waves-effect waves-light blue">
+                    <i class="material-icons left">arrow_back</i> Back
+                </a>
+                <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}" class="btn btn-small waves-effect waves-light indigo darken-2 tooltipped" target="_blank" rel="noopener" data-position="bottom" data-tooltip="Share on Facebook" aria-label="Share on Facebook">
+                    <i class="material-icons left">share</i> Share
+                </a>
+            </div>
             <div class="section">
                 ${htmlContent}
             </div>
